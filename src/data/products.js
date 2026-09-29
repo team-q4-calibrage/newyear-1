@@ -1,0 +1,9 @@
+export const products = [
+  { id:1, name:'Coffret Lumière Étoilée', category:'Maison & déco', price:19900, oldPrice:34900, discount:'-43%', image:'https://images.unsplash.com/photo-1513883049090-d0b7439799bf?auto=format&fit=crop&w=900&q=85', rating:4.9, reviews:128, tag:'Best-seller', stock:7 },
+  { id:2, name:'Montre Minimal Gold', category:'Mode & accessoires', price:24900, oldPrice:44900, discount:'-44%', image:'https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=900&q=85', rating:4.8, reviews:94, tag:'Coup de cœur', stock:4 },
+  { id:3, name:'Diffuseur Aura', category:'Bien-être', price:17500, oldPrice:29900, discount:'-42%', image:'https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=900&q=85', rating:4.7, reviews:76, tag:'Nouveau', stock:12 },
+  { id:4, name:'Casque Nova Wireless', category:'Tech', price:29900, oldPrice:49900, discount:'-40%', image:'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&q=85', rating:4.9, reviews:211, tag:'Top vente', stock:3 },
+  { id:5, name:'Sac City Élégance', category:'Mode & accessoires', price:22500, oldPrice:37500, discount:'-40%', image:'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=900&q=85', rating:4.8, reviews:63, tag:'Édition fêtes', stock:9 },
+  { id:6, name:'Set Verres Crystal', category:'Maison & déco', price:14900, oldPrice:24900, discount:'-40%', image:'https://images.unsplash.com/photo-1572119865084-43c285814d63?auto=format&fit=crop&w=900&q=85', rating:4.6, reviews:51, tag:'Idée cadeau', stock:15 },
+  { id:7, name:'Bougie Parfumée Vanille', category:'Bien-être', price:8900, oldPrice:14900, discount:'-40%', image:'https://images.unsplash.com/photo-1602028915047-37269d1a73f7?auto=format&fit=crop&w=900&q=85', rating:4.8, reviews:89, tag:'Nouveau', stock:8 },
+]
