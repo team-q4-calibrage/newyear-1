@@ -323,14 +323,14 @@ footer{border-top:1px solid var(--line);max-width:var(--max);margin:auto;padding
   .cart-drawer{width:100%;max-width:100%}
   .checkout-form{padding:15px 0}
   .checkout-item{padding:8px 0}
-  .form-group label{font-size:14px}
-  .form-group input,.form-group textarea{font-size:16px;padding:10px 12px}
-  .submit-btn{font-size:13px}
+  .form-group label{font-size:16px}
+  .form-group input,.form-group textarea{font-size:16px;padding:12px 14px}
+  .submit-btn{font-size:16px}
   .confirmation{padding:30px 20px}
   .confirmation-details{padding:15px}
-  .confirmation-details div{font-size:14px}
-  .toast{bottom:100px;padding:10px 20px;font-size:13px}
-  .mobile-buy-btn{bottom:16px;right:16px;padding:12px 20px;font-size:14px}
+  .confirmation-details div{font-size:16px}
+  .toast{bottom:100px;padding:10px 20px;font-size:16px}
+  .mobile-buy-btn{bottom:16px;right:16px;padding:12px 20px;font-size:16px}
   .hero-buy{left:50%;transform:translateX(-50%);right:auto}
   .hero-product-controls{right:50%;transform:translateX(50%);left:auto}
   .packs-grid{grid-template-columns:1fr;max-width:100%}
