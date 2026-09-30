@@ -155,6 +155,8 @@ function Cart({ items, onClose, onRemove, onChangeQty, onCheckout }) {
           <div className="cart-items">{items.map(item=><div className="cart-item" key={item.id}><img src={item.image} alt={item.name} loading="lazy"/><div className="cart-item-info"><h4>{item.name}</h4><strong>{formatPrice(item.price)}</strong><div className="qty"><button onClick={()=>onChangeQty(item.id,-1)} aria-label="Diminuer la quantité"><Minus size={13}/></button><span>{item.qty}</span><button onClick={()=>onChangeQty(item.id,1)} aria-label="Augmenter la quantité"><Plus size={13}/></button></div></div><button className="remove" onClick={()=>onRemove(item.id)} aria-label={`Supprimer ${item.name}`}>Supprimer</button></div>)}</div>
           <div className="cart-footer">
             <div><span>Sous-total</span><strong>{formatPrice(total)}</strong></div>
+            <div><span>Livraison</span><strong>{formatPrice(1500)}</strong></div>
+            <div className="cart-total"><span>Total</span><strong>{formatPrice(total + 1500)}</strong></div>
             <button className="checkout" onClick={onCheckout} aria-label="Continuer vers le paiement">Continuer vers le paiement <ArrowRight/></button>
             <a className="whatsapp-btn" href={`https://wa.me/${whatsappNumber}?text=${whatsappMsg}`} target="_blank" rel="noopener noreferrer">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
@@ -188,7 +190,11 @@ function Checkout({ items, total, onClose, onConfirm }) {
   const validate = () => {
     const errs = {}
     if (!form.name.trim()) errs.name = 'Nom requis'
-    if (!form.phone.trim()) errs.phone = 'Téléphone requis'
+    if (!form.phone.trim()) {
+      errs.phone = 'Téléphone requis'
+    } else if (!/^(\+229|229)?[0-9]{8}$/.test(form.phone.replace(/\s/g, ''))) {
+      errs.phone = 'Numéro invalide (8 chiffres, ex : 96 12 34 56)'
+    }
     if (!form.address.trim()) errs.address = 'Adresse requise'
     setErrors(errs)
     return Object.keys(errs).length === 0
@@ -202,7 +208,9 @@ function Checkout({ items, total, onClose, onConfirm }) {
           <div className="checkout-summary">
             <div className="summary-icon"><ShoppingBag size={24}/></div>
             <div className="summary-text"><span>Articles</span><strong>{items.reduce((s,i)=>s+i.qty,0)}</strong></div>
-            <div className="summary-text"><span>Total</span><strong>{formatPrice(total)}</strong></div>
+            <div className="summary-text"><span>Sous-total</span><strong>{formatPrice(total)}</strong></div>
+            <div className="summary-text"><span>Livraison</span><strong>{formatPrice(1500)}</strong></div>
+            <div className="summary-text"><span>Total</span><strong>{formatPrice(total + 1500)}</strong></div>
           </div>
           
           <div className="form-section">
@@ -372,6 +380,44 @@ function GiftAssistant({ onClose, onAdd }) {
   )
 }
 
+function ProductModal({ product, onClose, onAdd, onBuyNow }) {
+  useEffect(() => {
+    const handleKey = (e) => { if (e.key === 'Escape') onClose() }
+    window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
+  }, [onClose])
+  const [qty, setQty] = useState(1)
+  if (!product) return null
+  return (
+    <div className="cart-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-label={`Fiche produit ${product.name}`}>
+      <div className="product-modal" onClick={e=>e.stopPropagation()}>
+        <button className="icon-btn product-modal-close" onClick={onClose} aria-label="Fermer"><X/></button>
+        <div className="product-modal-image">
+          <img src={product.image} alt={product.name}/>
+          <span className="discount">{product.discount}</span>
+        </div>
+        <div className="product-modal-info">
+          <span className="category">{product.category}</span>
+          <h2>{product.name}</h2>
+          <div className="rating"><span>{'★'.repeat(Math.round(product.rating))}</span><small>{product.rating} ({product.reviews} avis)</small></div>
+          <div className="price-row"><strong>{formatPrice(product.price)}</strong><del>{formatPrice(product.oldPrice)}</del></div>
+          <p className="product-modal-desc">Découvrez {product.name}, un produit de qualité sélectionné avec soin pour vous. Idéal pour offrir ou vous faire plaisir.</p>
+          <p className="product-modal-stock">{product.stock > 0 ? `✓ En stock (${product.stock} disponibles)` : '✗ Rupture de stock'}</p>
+          <div className="qty-selector">
+            <button onClick={()=>setQty(q=>Math.max(1,q-1))} aria-label="Diminuer la quantité"><Minus size={16}/></button>
+            <span>{qty}</span>
+            <button onClick={()=>setQty(q=>Math.min(product.stock,q+1))} aria-label="Augmenter la quantité"><Plus size={16}/></button>
+          </div>
+          <div className="product-modal-actions">
+            <button className="buy-btn" onClick={()=>{onAdd({...product,qty});onClose()}}>Ajouter au panier</button>
+            <button className="checkout" onClick={()=>{onBuyNow({...product,qty});onClose()}}>Acheter maintenant</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function AllProducts({ onAdd, onBack, onCart, cartCount, items, onChangeQty, onRemove, total, setCartOpen, setCheckoutOpen, confirmOrder, order, setOrder }) {
   const [category, setCategory] = useState('Tous')
   const [search, setSearch] = useState('')
@@ -466,6 +512,7 @@ function App() {
   const [currentPage,setCurrentPage]=useState('home')
   const [showScratch,setShowScratch]=useState(false)
   const [showAssistant,setShowAssistant]=useState(false)
+  const [selectedProduct,setSelectedProduct]=useState(null)
   const categories=['Tous','Maison & déco','Mode & accessoires','Bien-être','Tech']
   const filtered=category==='Tous'?products:products.filter(p=>p.category===category)
 
@@ -495,9 +542,8 @@ function App() {
   const [toast,setToast]=useState(null)
   const add=(product)=>{
     setItems(prev=>prev.some(i=>i.id===product.id)?prev.map(i=>i.id===product.id?{...i,qty:i.qty+1}:i):[...prev,{...product,qty:1}])
-    setToast(`${product.name} ajouté au panier`)
-    setTimeout(()=>setToast(null),2500)
-    setCartOpen(true)
+    setToast({ message: `${product.name} ajouté au panier`, product })
+    setTimeout(()=>setToast(null),4000)
   }
   const changeQty=(id,delta)=>setItems(prev=>prev.map(i=>i.id===id?{...i,qty:i.qty+delta}:i).filter(i=>i.qty>0))
   const cartCount=items.reduce((s,i)=>s+i.qty,0)
@@ -632,7 +678,16 @@ function App() {
     {order && <OrderConfirmation order={order} onClose={()=>setOrder(null)}/>}
     {showScratch && <ScratchCard onClose={()=>setShowScratch(false)}/>}
     {showAssistant && <GiftAssistant onClose={()=>setShowAssistant(false)} onAdd={add}/>}
-    {toast && <div className="toast">{toast}</div>}
+    {selectedProduct && <ProductModal product={selectedProduct} onClose={()=>setSelectedProduct(null)} onAdd={(p)=>{add(p)}} onBuyNow={(p)=>{add(p);setCartOpen(true)}}/>}
+    {toast && (
+      <div className="toast">
+        <span>✓ {toast.message}</span>
+        <div className="toast-actions">
+          <button onClick={()=>setToast(null)}>Continuer mes achats</button>
+          <button onClick={()=>{setToast(null);setCartOpen(true)}}>Voir le panier</button>
+        </div>
+      </div>
+    )}
     <button className="mobile-buy-btn" onClick={()=>setCartOpen(true)} aria-label={`Ouvrir le panier, ${cartCount} article(s)`}><ShoppingBag size={18}/> Panier {cartCount>0 && <b>{cartCount}</b>}</button>
   </>
 }

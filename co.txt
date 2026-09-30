@@ -1,0 +1,578 @@
+PLAN COMPLET DE CORRECTION UX/UI — NEWYEAR E-COMMERCE
+===============================================================
+
+OBJECTIF
+--------
+Améliorer l'expérience utilisateur du site e-commerce sans refaire complètement
+le design existant et sans modifier le backend.
+
+Identité à conserver :
+- Palette noir / blanc / or
+- Style premium
+- Playfair Display + DM Sans
+- React JSX
+- Responsive
+- Animations existantes lorsqu'elles sont pertinentes
+- Fonctionnalités existantes
+
+IMPORTANT
+---------
+Ne pas demander à Windsurf/Cursor de tout modifier en une seule fois.
+Appliquer les étapes une par une.
+
+Après chaque étape :
+    npm run dev
+
+Puis vérifier :
+- 375 px
+- 768 px
+- 1440 px
+
+
+ORDRE DE TRAVAIL
+----------------
+1. Panier + ajout au panier
+2. Fiche produit
+3. Checkout
+4. Recherche
+5. Cartes produits
+6. Hero
+7. Responsive
+8. Audit final UX
+
+
+===============================================================
+ÉTAPE 1 — PARCOURS D'ACHAT / PANIER
+===============================================================
+
+PROMPT À DONNER À WINDSURF/CURSOR
+---------------------------------
+
+Analyse tout le frontend de ce projet React/Vite avant de modifier quoi que ce soit.
+
+Objectif : améliorer l'UX du parcours d'achat sans modifier le backend ni supprimer
+les fonctionnalités existantes.
+
+Travaille uniquement sur :
+1. Ajout au panier
+2. Panier
+3. Fiche produit
+4. Checkout
+
+Règles :
+- Ne supprime aucune fonctionnalité existante.
+- Ne modifie pas la logique backend.
+- Conserve la palette actuelle noir/blanc/or.
+- Conserve les polices et le style premium existant.
+- Conserve le responsive.
+- Ne transforme pas le projet en TypeScript.
+- Utilise React JSX.
+- Réutilise les composants et fonctions existants lorsque c'est possible.
+
+Corrections :
+
+1. Quand l'utilisateur clique sur « Ajouter au panier », ne pas ouvrir
+   automatiquement le panier.
+
+2. Afficher un toast :
+   « ✓ Produit ajouté au panier »
+
+   avec deux actions :
+   « Continuer mes achats »
+   « Voir le panier »
+
+3. Conserver le compteur du panier et le mettre à jour immédiatement.
+
+4. Améliorer le bouton panier pour afficher clairement le nombre d'articles.
+
+5. Vérifier que l'ajout, la suppression et la modification des quantités
+   fonctionnent correctement avec localStorage.
+
+6. Ajouter une fiche produit / modal produit réutilisable contenant :
+   - grande image
+   - nom
+   - catégorie
+   - note
+   - nombre d'avis
+   - prix actuel
+   - ancien prix
+   - réduction
+   - description
+   - disponibilité
+   - quantité
+   - Ajouter au panier
+   - Acheter maintenant
+
+7. « Acheter maintenant » doit ouvrir la fiche produit ou lancer directement
+   le parcours d'achat de manière claire, mais ne doit pas créer de comportement
+   surprenant.
+
+8. Ajouter les informations de livraison dans le panier.
+
+9. Afficher clairement :
+   Sous-total
+   Livraison
+   Total
+
+10. Dans le checkout, organiser les informations en trois sections :
+    - Coordonnées
+    - Livraison
+    - Paiement
+
+11. Vérifier les champs obligatoires et afficher les erreurs directement
+    sous les champs.
+
+12. Améliorer la validation du téléphone.
+
+13. Empêcher la validation d'une commande avec des informations invalides.
+
+14. Ajouter un résumé permanent de la commande avant confirmation.
+
+15. Ajouter un état de chargement pendant la confirmation de commande.
+
+16. Ajouter une confirmation visuelle claire après commande.
+
+Avant de modifier le code, identifie les fichiers concernés et explique brièvement
+ce que tu vas changer.
+
+Puis applique les modifications.
+
+À la fin, vérifie qu'il n'y a aucune erreur ESLint/console/runtime et que
+npm run dev fonctionne.
+
+
+===============================================================
+ÉTAPE 2 — RECHERCHE
+===============================================================
+
+PROMPT À DONNER À WINDSURF/CURSOR
+---------------------------------
+
+Dans le projet React existant, remplace la recherche actuelle utilisant
+window.prompt() par une vraie interface de recherche.
+
+Contraintes :
+- React JSX uniquement.
+- Ne pas modifier le backend.
+- Conserver le design noir/blanc/or.
+- Conserver le header existant.
+- Ne pas supprimer les fonctionnalités existantes.
+
+Desktop :
+- Au clic sur l'icône recherche, afficher un champ de recherche élégant
+  dans le header.
+- Placeholder : « Rechercher un produit... »
+- Afficher les résultats correspondants pendant la saisie.
+- Recherche par nom et catégorie.
+- Permettre d'appuyer sur Escape pour fermer.
+- Afficher un état « Aucun produit trouvé » si nécessaire.
+
+Mobile :
+- Afficher une interface de recherche adaptée au mobile.
+- Champ suffisamment grand pour être utilisé au doigt.
+- Bouton retour/fermeture facilement accessible.
+
+UX :
+- debounce léger si nécessaire.
+- Ne pas faire de requête réseau.
+- Utiliser uniquement les données produits déjà disponibles dans le frontend.
+- Ne pas provoquer de déplacement brutal du layout.
+
+
+===============================================================
+ÉTAPE 3 — HERO
+===============================================================
+
+PROMPT À DONNER À WINDSURF/CURSOR
+---------------------------------
+
+Optimise uniquement la section Hero du site e-commerce.
+
+Objectif : améliorer la hiérarchie visuelle et la conversion sans changer
+l'identité graphique.
+
+Conserver :
+- noir
+- blanc
+- or
+- Playfair Display
+- DM Sans
+- animations existantes lorsque pertinentes
+
+Réduire la surcharge visuelle.
+
+Hiérarchie souhaitée :
+
+1. Petit label de campagne
+2. Grand titre
+3. Description courte
+4. CTA principal : « Découvrir les offres »
+5. CTA secondaire éventuellement
+6. Quelques éléments de réassurance
+7. Produit vedette à droite
+
+Le CTA principal doit être immédiatement identifiable.
+
+Sur mobile :
+- titre lisible
+- description courte
+- CTA pleine largeur ou suffisamment large
+- produit bien visible
+- aucune information importante ne doit être coupée
+- aucune animation ne doit empêcher l'utilisation
+
+Améliore également le carousel :
+- swipe tactile sur mobile
+- boutons précédent/suivant accessibles
+- indicateurs clairs
+- pause au survol desktop
+- pause pendant l'interaction utilisateur
+- transition fluide
+- respecter prefers-reduced-motion
+
+Ne modifie aucune autre section du site.
+
+
+===============================================================
+ÉTAPE 4 — CARTES PRODUITS
+===============================================================
+
+PROMPT À DONNER À WINDSURF/CURSOR
+---------------------------------
+
+Améliore uniquement les cartes produits.
+
+Objectif : permettre à l'utilisateur de comprendre rapidement le produit
+et son avantage commercial.
+
+Chaque carte doit afficher clairement :
+- image produit
+- badge promotionnel si applicable
+- catégorie
+- nom
+- note + nombre d'avis
+- prix actuel
+- ancien prix si promotion
+- économie ou pourcentage de réduction
+- bouton « Ajouter au panier »
+- bouton ou interaction permettant d'ouvrir la fiche produit
+
+Améliorations UX :
+- conserver des hauteurs cohérentes
+- images avec ratio uniforme
+- éviter les textes coupés
+- boutons suffisamment grands sur mobile
+- conserver les effets hover uniquement sur les appareils compatibles
+- éviter les animations excessives
+- rendre toute la carte accessible au clavier
+
+Ne pas inventer d'avis, de stocks ou de promotions.
+Utiliser uniquement les données présentes dans products.js ou les données
+déjà disponibles.
+
+
+===============================================================
+ÉTAPE 5 — DEVISE
+===============================================================
+
+PROMPT À DONNER À WINDSURF/CURSOR
+---------------------------------
+
+Analyse tout le projet et identifie toutes les valeurs monétaires affichées
+à l'utilisateur.
+
+Le site doit utiliser une seule devise cohérente : XOF / FCFA.
+
+Cherche notamment :
+- €
+- EUR
+- $
+- USD
+- « euro »
+- « euros »
+- formats de prix codés en dur
+
+Remplace les affichages incohérents par le système de formatage monétaire
+déjà utilisé par les produits.
+
+Le format utilisateur doit être cohérent, par exemple :
+19 900 FCFA
+
+Le montant numérique interne doit rester correct.
+
+Vérifie particulièrement :
+- produits
+- Hero
+- panier
+- checkout
+- assistant cadeau
+- promotions
+- messages toast
+- filtres de prix
+
+Ne modifie pas les valeurs réelles des produits sans raison.
+
+
+===============================================================
+ÉTAPE 6 — RESPONSIVE
+===============================================================
+
+PROMPT À DONNER À WINDSURF/CURSOR
+---------------------------------
+
+Fais un audit responsive complet du frontend.
+
+Teste visuellement et logiquement les breakpoints suivants :
+
+375px
+768px
+1024px
+1440px
+
+Priorité :
+- header
+- navigation mobile
+- Hero
+- carousel
+- cartes produits
+- filtres
+- panier
+- checkout
+- modales
+- assistant cadeau
+- carte à gratter
+- boutons
+- formulaires
+
+Corrige :
+- débordements horizontaux
+- textes coupés
+- boutons trop petits
+- éléments trop rapprochés
+- images déformées
+- grilles trop larges
+- modales dépassant de l'écran
+- champs difficiles à utiliser au doigt
+- sticky/fixed elements qui masquent du contenu
+
+Sur mobile, les boutons importants doivent avoir une zone tactile confortable.
+
+Ne change pas inutilement le design desktop.
+Ne crée pas de nouveau système de design.
+Réutilise les classes et composants existants.
+
+
+===============================================================
+ÉTAPE 7 — CONFIANCE / INFORMATIONS COMMERCIALES
+===============================================================
+
+PROMPT À DONNER À WINDSURF/CURSOR
+---------------------------------
+
+Fais un audit de toutes les informations de confiance affichées sur le site.
+
+Recherche notamment :
+- avis
+- nombre d'avis
+- stock
+- paiement sécurisé
+- cryptage
+- livraison
+- retours
+- garanties
+- badges de confiance
+- délais
+
+Pour chaque information :
+
+1. Vérifie si elle provient réellement des données du projet.
+2. Si elle est statique, identifie-la clairement.
+3. Ne fabrique aucune donnée.
+4. Ne présente pas comme « vérifié » quelque chose qui ne l'est pas.
+5. Ne présente pas comme paiement réellement sécurisé une fonctionnalité
+   qui n'est pas encore connectée à un véritable prestataire de paiement.
+
+Propose des textes honnêtes lorsque les fonctionnalités backend ne sont
+pas encore disponibles.
+
+Ne supprime pas les éléments utiles ; rends-les simplement exacts.
+
+
+===============================================================
+ÉTAPE 8 — CHECKOUT
+===============================================================
+
+OBJECTIF
+--------
+
+Le checkout doit être simple, rassurant et compréhensible.
+
+Structure recommandée :
+
+1. COORDONNÉES
+   - Nom complet
+   - Téléphone
+
+2. LIVRAISON
+   - Ville
+   - Quartier
+   - Adresse / rue
+   - Repère
+   - Informations complémentaires
+
+3. PAIEMENT
+   - Mobile Money
+   - Carte bancaire
+   - Paiement à la livraison si réellement disponible
+
+Toujours afficher :
+
+Votre commande
+-------------------------
+Produit × 1       19 900 FCFA
+Livraison          1 500 FCFA
+-------------------------
+TOTAL             21 400 FCFA
+
+Le montant final doit être évident avant la confirmation.
+
+
+===============================================================
+ÉTAPE 9 — AMÉLIORATIONS UX SUPPLÉMENTAIRES
+===============================================================
+
+À vérifier après les principales corrections :
+
+1. Ajouter éventuellement les favoris avec un bouton ♡.
+
+2. Permettre de supprimer un produit du panier avec un feedback clair :
+   « Article supprimé — Annuler »
+
+3. Afficher un compteur dynamique du panier.
+
+4. Rendre les filtres mobiles plus compacts :
+   « Catégorie ▾ »
+
+5. Éviter que la section « Jouez et gagnez » détourne l'utilisateur
+   avant qu'il ait découvert les produits.
+
+6. Présenter l'assistant cadeau comme une aide à l'achat :
+   « Vous ne savez pas quoi choisir ?
+    Répondez à 3 questions et trouvez une idée cadeau. »
+
+7. Utiliser « Voir les offres » ou « Voir les offres -44 % »
+   plutôt que des CTA trop vagues.
+
+8. Vérifier que les boutons +, supprimer, fermer, retour et panier
+   sont suffisamment grands sur mobile.
+
+9. Vérifier que toutes les modales peuvent être fermées :
+   - bouton X
+   - Escape
+   - clic extérieur lorsque pertinent
+
+10. Vérifier l'accessibilité clavier.
+
+
+===============================================================
+ARCHITECTURE UX RECOMMANDÉE
+===============================================================
+
+Le parcours principal doit être :
+
+ARRIVÉE SUR LE SITE
+        ↓
+DÉCOUVERTE DU PRODUIT
+        ↓
+COMPRÉHENSION DE L'OFFRE
+        ↓
+FICHE PRODUIT
+        ↓
+AJOUT AU PANIER
+        ↓
+PANIER
+        ↓
+COORDONNÉES
+        ↓
+LIVRAISON
+        ↓
+PAIEMENT
+        ↓
+CONFIRMATION
+
+
+===============================================================
+CHECKLIST FINALE
+===============================================================
+
+[ ] Header clair
+[ ] Recherche fonctionnelle
+[ ] Navigation mobile correcte
+[ ] Hero lisible
+[ ] CTA principal visible
+[ ] Carousel utilisable au doigt
+[ ] Cartes produits cohérentes
+[ ] Fiche produit disponible
+[ ] Prix clairement affichés
+[ ] Réductions clairement affichées
+[ ] Devise cohérente
+[ ] Ajout au panier sans ouverture forcée
+[ ] Toast après ajout
+[ ] Compteur panier fonctionnel
+[ ] Panier clair
+[ ] Frais de livraison visibles
+[ ] Total final visible
+[ ] Checkout en étapes
+[ ] Validation des champs
+[ ] Téléphone correctement validé
+[ ] Confirmation de commande
+[ ] Informations de confiance exactes
+[ ] Aucun faux avis
+[ ] Aucun faux stock
+[ ] Aucun faux badge de sécurité
+[ ] Responsive 375px
+[ ] Responsive 768px
+[ ] Responsive 1024px
+[ ] Responsive 1440px
+[ ] Pas de débordement horizontal
+[ ] Boutons tactiles correctement dimensionnés
+[ ] Modales adaptées au mobile
+[ ] prefers-reduced-motion respecté
+[ ] Pas d'erreur console
+[ ] npm run dev fonctionne
+
+
+===============================================================
+RÈGLE DE TRAVAIL
+===============================================================
+
+NE PAS appliquer toutes les corrections en une seule fois.
+
+Faire :
+
+Étape 1
+→ tester
+
+Étape 2
+→ tester
+
+Étape 3
+→ tester
+
+Étape 4
+→ tester
+
+Étape 5
+→ tester
+
+Étape 6
+→ tester
+
+Étape 7
+→ tester
+
+Étape 8
+→ test final
+
+Toujours conserver les fonctionnalités existantes et éviter les modifications
+inutiles du backend.
