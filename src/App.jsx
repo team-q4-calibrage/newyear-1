@@ -91,10 +91,10 @@ function HeroCarousel({ products, onAdd }) {
       <div className="hero-card hero-card-back"><span>NEW YEAR</span></div>
       <div className="hero-product">
         <div className="hero-slide hero-slide-next">
-          <img src={nextProduct.image} alt={nextProduct.name}/>
+          <img src={nextProduct.image} alt={nextProduct.name} loading="lazy"/>
         </div>
         <div key={product.id} className={`hero-slide hero-slide-current hero-slide-${direction}`}>
-          <img src={product.image} alt={product.name}/>
+          <img src={product.image} alt={product.name} loading="lazy"/>
         </div>
         <div className="hero-product-shade"/>
         <div className="hero-product-info">
@@ -470,6 +470,27 @@ function App() {
   const filtered=category==='Tous'?products:products.filter(p=>p.category===category)
 
   useEffect(()=>{localStorage.setItem('ny-cart',JSON.stringify(items))},[items])
+
+  // Structured data for SEO
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.type = 'application/ld+json'
+    script.text = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Store",
+      "name": "NEW YEAR",
+      "description": "Offres exclusives du Nouvel An — cadeaux, maison et produits tendance à prix réduit",
+      "url": "https://newyear-1-one.vercel.app/",
+      "telephone": "+22996123456",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Cotonou",
+        "addressCountry": "BJ"
+      }
+    })
+    document.head.appendChild(script)
+    return () => document.head.removeChild(script)
+  }, [])
 
   const [toast,setToast]=useState(null)
   const add=(product)=>{
