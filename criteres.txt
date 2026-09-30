@@ -1,0 +1,300 @@
+==============================================================
+INSTRUCTIONS COMPLÈTES : GUIDE DES 10 CRITÈRES + BACKEND OU PAS
+==============================================================
+
+
+##############################################################
+PARTIE 1 : GUIDE DES 10 CRITÈRES
+##############################################################
+
+Chaque site est noté sur ces 10 points. Pour chacun : ce qu'il faut faire
+pendant la réalisation, et comment le vérifier avant d'envoyer votre lien.
+
+
+--------------------------------------------------------------
+01. RAPIDITÉ D'EXÉCUTION
+--------------------------------------------------------------
+FAIRE
+- Livrer d'abord une version simple mais complète, puis l'améliorer.
+- Un site fini à l'heure vaut mieux qu'un site parfait en retard.
+- Réutiliser shared-assets.
+
+VÉRIFIER
+- Votre lien est en ligne à l'heure prévue dans la répartition des tâches.
+- Le lien s'ouvre en navigation privée.
+
+
+--------------------------------------------------------------
+02. QUALITÉ VISUELLE
+--------------------------------------------------------------
+FAIRE
+- Des images nettes (jamais étirées ni floues).
+- Des espacements réguliers.
+- Des éléments alignés.
+- Le même style de bouton partout.
+- 2 polices maximum.
+
+VÉRIFIER
+- Barre d'outils appareils de DevTools en 375 px, 768 px et 1440 px de large.
+- Zoomer à 200 % pour repérer ce qui est flou ou mal aligné.
+
+
+--------------------------------------------------------------
+03. DESIGN
+--------------------------------------------------------------
+FAIRE
+- Une palette de 3 à 4 couleurs liée à l'événement.
+- Une hiérarchie claire : grand titre, sous-titre plus petit, texte lisible.
+- Assez d'espace blanc.
+
+VÉRIFIER
+- Test du flou : plissez les yeux, l'offre et le bouton « Acheter » doivent
+  toujours ressortir.
+- Vérifier le contraste du texte dans Lighthouse (Accessibilité).
+
+
+--------------------------------------------------------------
+04. CRÉATIVITÉ
+--------------------------------------------------------------
+FAIRE
+- Votre propre nom de marque et votre histoire.
+- Ajouter un élément mémorable : une animation, un assistant de choix de
+  cadeau, une carte à gratter, une roue de la chance.
+- Ne pas livrer un template tel quel.
+
+VÉRIFIER
+- Un correcteur se souviendrait-il de ce site après en avoir vu 100 ?
+- Est-il différent des 11 autres sites de notre équipe ?
+
+
+--------------------------------------------------------------
+05. EXPERTISE MARKETING
+--------------------------------------------------------------
+FAIRE
+- Un titre qui vend un bénéfice.
+- Une offre claire.
+- L'ancien prix barré.
+- Un compte à rebours.
+- « Plus que X en stock ».
+- Des avis.
+- Une garantie.
+- Des packs ou ventes additionnelles.
+- Des boutons orientés action (« J'en profite à -50 % »).
+
+VÉRIFIER
+- Test des 5 secondes : montrez le site 5 secondes à quelqu'un. Il doit
+  pouvoir dire ce qui est vendu, quelle est l'offre et pourquoi acheter
+  maintenant.
+
+
+--------------------------------------------------------------
+06. STRUCTURE DU SITE
+--------------------------------------------------------------
+FAIRE
+- Suivre le parcours client : Attirer -> Retenir -> Convaincre -> Convertir.
+- Un menu clair.
+- Du HTML sémantique (header, nav, main, section, footer).
+- Un seul h1.
+
+VÉRIFIER
+- Onglet Elements de DevTools : titres dans un ordre logique.
+- Score SEO de Lighthouse.
+- Cliquer sur chaque lien et chaque élément du menu.
+
+
+--------------------------------------------------------------
+07. EXPÉRIENCE UTILISATEUR
+--------------------------------------------------------------
+FAIRE
+- Mobile d'abord.
+- Texte d'au moins 16 px.
+- Boutons d'au moins 44 px de haut.
+- Bouton « Acheter » fixe sur mobile.
+- Formulaires courts.
+- Aucune pop-up qui bloque la page.
+
+VÉRIFIER
+- L'ouvrir sur un vrai téléphone.
+- Score Accessibilité de Lighthouse.
+- wave.webaim.org pour les erreurs d'accessibilité.
+
+
+--------------------------------------------------------------
+08. CAPACITÉ DE CONVERSION
+--------------------------------------------------------------
+FAIRE
+- Bouton « Acheter » visible sans faire défiler.
+- Tout le parcours fonctionne : produit -> panier -> paiement -> page de
+  confirmation (« Commande confirmée »).
+- Afficher le total, les logos de paiement et un bouton WhatsApp ou contact.
+
+VÉRIFIER
+- Sur votre téléphone, achetez quelque chose du début à la fin.
+- Il faut 3 clics maximum pour arriver au paiement.
+
+
+--------------------------------------------------------------
+09. QUALITÉ TECHNIQUE
+--------------------------------------------------------------
+FAIRE
+- Compresser les images (WebP, moins de 200 Ko chacune).
+- Chargement différé (lazy-load) des images plus bas dans la page.
+- Titre de page, méta-description, favicon et texte alt sur chaque image.
+- Viser zéro erreur dans la console.
+
+VÉRIFIER
+- Lighthouse : viser 90+ en Performance, Accessibilité, Bonnes pratiques
+  et SEO.
+- Onglet Console : aucune erreur rouge.
+- pagespeed.web.dev sur le lien en ligne.
+
+
+--------------------------------------------------------------
+10. RIGUEUR ET SOUCI DU DÉTAIL
+--------------------------------------------------------------
+FAIRE
+- Aucune faute d'orthographe.
+- Pas de « lorem ipsum ».
+- Les mêmes prix et la même devise partout.
+- Les bonnes dates pour l'événement.
+- Un vrai titre d'onglet et un favicon.
+- Un pied de page avec © et contact.
+
+VÉRIFIER
+- Coller vos textes dans languagetool.org.
+- Cliquer sur chaque bouton.
+- Demander à un coéquipier de relire le site pendant 5 minutes.
+
+
+==============================================================
+COMMENT UTILISER CHROME DEVTOOLS
+==============================================================
+Ouvrez votre site en ligne dans Chrome et appuyez sur F12
+(ou clic droit -> Inspecter).
+
+LIGHTHOUSE (audit complet)
+  Onglet Lighthouse -> Mode : Navigation, Appareil : Mobile, cocher toutes
+  les catégories -> Analyser le chargement de la page. Corriger d'abord les
+  points rouges et orange. Le lancer en navigation privée pour que les
+  extensions ne faussent pas le score.
+
+VUE MOBILE
+  Appuyer sur Ctrl+Shift+M (barre d'outils appareils). Tester iPhone SE
+  (375 px), iPad (768 px), puis pleine largeur.
+
+TEST CONNEXION LENTE
+  Onglet Network (Réseau) -> remplacer No throttling par Slow 4G ->
+  recharger. L'offre et le bouton « Acheter » doivent s'afficher vite.
+
+FICHIERS TROP LOURDS
+  Onglet Network -> recharger -> cliquer sur la colonne Size pour trier.
+  Compresser toute image de plus de 200 Ko avec squoosh.app ou tinypng.com.
+
+ERREURS
+  Onglet Console : chaque ligne rouge est une erreur à corriger.
+
+INSPECTER ET AJUSTER
+  Onglet Elements : cliquer sur un élément pour voir et tester son CSS en
+  direct. Recopier ensuite les corrections dans votre code.
+
+CAPTURE PLEINE PAGE
+  Ctrl+Shift+P -> taper screenshot -> Capture full size screenshot.
+  Sert de preuve que le site est à nous (voir le PDF sécurité).
+
+
+==============================================================
+AUTRES OUTILS GRATUITS
+==============================================================
+- pagespeed.web.dev : Test de vitesse de Google sur votre lien en ligne,
+  mobile et ordinateur.
+- wave.webaim.org : Erreurs d'accessibilité (contraste, libellés manquants,
+  texte alt manquant).
+- validator.w3.org : Erreurs HTML.
+- squoosh.app / tinypng.com : Compression d'images et conversion en WebP.
+- languagetool.org : Orthographe et grammaire, en français et en anglais.
+
+
+==============================================================
+VÉRIFICATION FINALE AVANT D'ENVOYER VOTRE LIEN
+==============================================================
+ 1. Le lien s'ouvre en navigation privée, sans mot de passe.
+ 2. Le site s'affiche bien sur un vrai téléphone.
+ 3. L'offre, le compte à rebours et le bouton « Acheter » sont visibles
+    sans faire défiler.
+ 4. Le parcours d'achat fonctionne jusqu'à la page de confirmation.
+ 5. Les scores Lighthouse mobile sont à 90+, ou le plus proche possible.
+ 6. Aucune erreur rouge dans la Console.
+ 7. Aucune image de plus de 200 Ko.
+ 8. Aucune faute, aucun texte provisoire, et les prix sont identiques
+    partout.
+ 9. Titre de page, favicon, méta-description et pied de page sont en place.
+10. Un coéquipier l'a relu.
+
+
+
+##############################################################
+PARTIE 2 : BACKEND OU PAS ?
+##############################################################
+
+RÉPONSE : Seulement le site. Nous n'avons pas besoin de backend.
+
+
+--------------------------------------------------------------
+POURQUOI PAS
+--------------------------------------------------------------
+- La consigne n'en demande pas. Les correcteurs jugent ce qu'ils peuvent
+  voir et cliquer : design, marketing, expérience utilisateur, conversion,
+  rapidité et détails. Une base de données ne rapporte aucun point en soi.
+
+- Il n'y a pas le temps. Chaque heure passée sur une API est une heure en
+  moins pour le design et les textes.
+
+- C'est un risque en plus. Si un serveur backend se met en veille ou plante
+  pendant la correction, tout le site paraît cassé. Un site statique sur
+  Netlify est toujours en ligne et se charge vite, ce qui aide le score
+  Lighthouse.
+
+
+--------------------------------------------------------------
+COMMENT LES SITES « FONCTIONNENT » QUAND MÊME SANS BACKEND
+--------------------------------------------------------------
+- Produits et prix :
+    Stockés dans le code (src/data/products.js).
+
+- Panier :
+    Gardé dans l'état React, plus localStorage pour qu'il survive à un
+    rechargement de la page.
+
+- Compte à rebours et « plus que X en stock » :
+    Du simple JavaScript dans la page.
+
+- Paiement / commande :
+    Un court formulaire (nom, téléphone, adresse) qui mène à une page
+    « Commande confirmée ».
+
+- Moyens de paiement :
+    Une démo : logos de paiement (Mobile Money, Visa...) et un badge
+    « Paiement sécurisé ». Aucune vraie carte n'est débitée.
+
+
+--------------------------------------------------------------
+BONUS FACULTATIFS, RÉALISTES ET SANS SERVEUR
+--------------------------------------------------------------
+- Commander sur WhatsApp :
+    Un bouton qui ouvre WhatsApp avec la commande déjà écrite
+    (https://wa.me/229XXXXXXXX?text=...). C'est très courant pour les
+    boutiques au Bénin, et c'est un bon point pour « Convertir ».
+
+- Netlify Forms :
+    Netlify peut recevoir gratuitement les formulaires de commande. Les
+    commandes apparaissent dans le tableau de bord Netlify, donc le
+    formulaire fonctionne vraiment. Sur un site React, il faut ajouter un
+    petit formulaire caché dans index.html.
+
+
+--------------------------------------------------------------
+RÈGLE POUR TOUT LE MONDE
+--------------------------------------------------------------
+Pas de backend, pas de base de données, pas de vrais paiements.
+Chaque site est uniquement frontend, hébergé sur Netlify, avec une commande
+qui se termine sur une page de confirmation.

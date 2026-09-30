@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import {
   ArrowRight, Check, ChevronDown, ChevronLeft, ChevronRight, Clock3,
-  Gift, Menu, Minus, Plus, Search, ShoppingBag, Sparkles, Star, X, ShieldCheck, Truck, CreditCard
+  Gift, Menu, Minus, Plus, Search, ShoppingBag, Sparkles, Star, X, ShieldCheck, Truck, CreditCard, User
 } from 'lucide-react'
 import './styles/index.css'
 import { products } from './data/products'
@@ -196,17 +196,33 @@ function Checkout({ items, total, onClose, onConfirm }) {
   const submit = (e) => { e.preventDefault(); if (validate()) onConfirm(form) }
   return (
     <div className="cart-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-label="Paiement">
-      <aside className="cart-drawer" onClick={e=>e.stopPropagation()}>
-        <div className="cart-head"><div><span>Finaliser la commande</span><h2>Paiement</h2></div><button className="icon-btn" onClick={onClose} aria-label="Fermer"><X/></button></div>
+      <aside className="cart-drawer checkout-drawer" onClick={e=>e.stopPropagation()}>
+        <div className="cart-head"><div><span className="checkout-eyebrow">Finalisation</span><h2>Vos informations</h2></div><button className="icon-btn" onClick={onClose} aria-label="Fermer"><X/></button></div>
         <form className="checkout-form" onSubmit={submit}>
-          <div className="checkout-items">{items.map(item=><div className="checkout-item" key={item.id}><img src={item.image} alt={item.name} loading="lazy"/><div><h4>{item.name}</h4><span>{formatPrice(item.price)} × {item.qty}</span></div><strong>{formatPrice(item.price*item.qty)}</strong></div>)}</div>
-          <div className="checkout-total"><span>Total</span><strong>{formatPrice(total)}</strong></div>
-          <div className="form-group"><label htmlFor="co-name">Nom complet</label><input id="co-name" name="name" value={form.name} onChange={handleChange} placeholder="Votre nom" aria-label="Nom complet"/>{errors.name && <span className="error">{errors.name}</span>}</div>
-          <div className="form-group"><label htmlFor="co-phone">Téléphone</label><input id="co-phone" name="phone" value={form.phone} onChange={handleChange} placeholder="Ex : 96 12 34 56" aria-label="Numéro de téléphone"/>{errors.phone && <span className="error">{errors.phone}</span>}</div>
-          <div className="form-group"><label htmlFor="co-address">Adresse de livraison</label><textarea id="co-address" name="address" value={form.address} onChange={handleChange} placeholder="Quartier, rue, repère..." rows={3} aria-label="Adresse de livraison"/>{errors.address && <span className="error">{errors.address}</span>}</div>
-          <div className="form-group"><label>Moyen de paiement</label><div className="payment-options"><label className={form.payment==='mobile'?'active':''}><input type="radio" name="payment" value="mobile" checked={form.payment==='mobile'} onChange={handleChange}/><CreditCard size={16}/> Mobile Money</label><label className={form.payment==='card'?'active':''}><input type="radio" name="payment" value="card" checked={form.payment==='card'} onChange={handleChange}/><CreditCard size={16}/> Carte bancaire</label><label className={form.payment==='cash'?'active':''}><input type="radio" name="payment" value="cash" checked={form.payment==='cash'} onChange={handleChange}/><Truck size={16}/> Paiement à la livraison</label></div></div>
-          <button type="submit" className="checkout submit-btn">Confirmer la commande — {formatPrice(total)}</button>
-          <small className="secure-note"><ShieldCheck size={13}/> Vos données sont sécurisées</small>
+          <div className="checkout-summary">
+            <div className="summary-icon"><ShoppingBag size={24}/></div>
+            <div className="summary-text"><span>Articles</span><strong>{items.reduce((s,i)=>s+i.qty,0)}</strong></div>
+            <div className="summary-text"><span>Total</span><strong>{formatPrice(total)}</strong></div>
+          </div>
+          
+          <div className="form-section">
+            <h3><User size={18}/> Informations personnelles</h3>
+            <div className="form-group"><label htmlFor="co-name">Nom complet *</label><input id="co-name" name="name" value={form.name} onChange={handleChange} placeholder="Votre nom et prénom" aria-label="Nom complet"/>{errors.name && <span className="error">{errors.name}</span>}</div>
+            <div className="form-group"><label htmlFor="co-phone">Téléphone *</label><input id="co-phone" name="phone" value={form.phone} onChange={handleChange} placeholder="Ex : 96 12 34 56" aria-label="Numéro de téléphone"/>{errors.phone && <span className="error">{errors.phone}</span>}</div>
+          </div>
+          
+          <div className="form-section">
+            <h3><Truck size={18}/> Livraison</h3>
+            <div className="form-group"><label htmlFor="co-address">Adresse de livraison *</label><textarea id="co-address" name="address" value={form.address} onChange={handleChange} placeholder="Quartier, rue, numéro, repère..." rows={3} aria-label="Adresse de livraison"/>{errors.address && <span className="error">{errors.address}</span>}</div>
+          </div>
+          
+          <div className="form-section">
+            <h3><CreditCard size={18}/> Paiement</h3>
+            <div className="payment-options"><label className={form.payment==='mobile'?'active':''}><input type="radio" name="payment" value="mobile" checked={form.payment==='mobile'} onChange={handleChange}/><CreditCard size={16}/> Mobile Money</label><label className={form.payment==='card'?'active':''}><input type="radio" name="payment" value="card" checked={form.payment==='card'} onChange={handleChange}/><CreditCard size={16}/> Carte bancaire</label><label className={form.payment==='cash'?'active':''}><input type="radio" name="payment" value="cash" checked={form.payment==='cash'} onChange={handleChange}/><Truck size={16}/> Paiement à la livraison</label></div>
+          </div>
+          
+          <button type="submit" className="checkout submit-btn">Confirmer ma commande — {formatPrice(total)}</button>
+          <small className="secure-note"><ShieldCheck size={13}/> Paiement 100% sécurisé et crypté</small>
         </form>
       </aside>
     </div>
