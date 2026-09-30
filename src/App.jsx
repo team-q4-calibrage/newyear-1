@@ -144,7 +144,9 @@ function Cart({ items, onClose, onRemove, onChangeQty, onCheckout }) {
     return () => window.removeEventListener('keydown', handleKey)
   }, [onClose])
   const total = items.reduce((sum,i)=>sum+i.price*i.qty,0)
-  const whatsappMsg = encodeURIComponent(`Bonjour ! Je souhaite passer commande :\n${items.map(i=>`• ${i.name} x${i.qty} — ${formatPrice(i.price*i.qty)}`).join('\n')}\n\nTotal : ${formatPrice(total)}`)
+  const deliveryFee = 1500
+  const grandTotal = total + deliveryFee
+  const whatsappMsg = encodeURIComponent(`Bonjour ! Je souhaite passer commande :\n${items.map(i=>`• ${i.name} x${i.qty} — ${formatPrice(i.price*i.qty)}`).join('\n')}\n\nLivraison : ${formatPrice(deliveryFee)}\nTotal : ${formatPrice(grandTotal)}`)
   const whatsappNumber = '22996123456'
   return (
     <div className="cart-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-label="Panier d'achat">
@@ -184,53 +186,143 @@ function Checkout({ items, total, onClose, onConfirm }) {
     window.addEventListener('keydown', handleKey)
     return () => window.removeEventListener('keydown', handleKey)
   }, [onClose])
-  const [form, setForm] = useState({ name:'', phone:'', address:'', payment:'mobile' })
+  const [form, setForm] = useState({ name:'', phone:'', city:'', district:'', address:'', landmark:'', payment:'mobile' })
   const [errors, setErrors] = useState({})
   const handleChange = (e) => { setForm({...form, [e.target.name]:e.target.value}); setErrors({...errors, [e.target.name]:''}) }
   const validate = () => {
     const errs = {}
-    if (!form.name.trim()) errs.name = 'Nom requis'
+    if (!form.name.trim()) errs.name = 'Le nom complet est requis'
     if (!form.phone.trim()) {
-      errs.phone = 'Téléphone requis'
-    } else if (!/^(\+229|229)?[0-9]{8}$/.test(form.phone.replace(/\s/g, ''))) {
-      errs.phone = 'Numéro invalide (8 chiffres, ex : 96 12 34 56)'
+      errs.phone = 'Le téléphone est requis'
+    } else if (form.phone.replace(/\s/g, '').length < 8) {
+      errs.phone = 'Entrez un numéro de téléphone valide (min. 8 chiffres)'
     }
-    if (!form.address.trim()) errs.address = 'Adresse requise'
+    if (!form.city.trim()) errs.city = 'La ville est requise'
+    if (!form.district.trim()) errs.district = 'Le quartier est requis'
+    if (!form.address.trim()) errs.address = "L'adresse est requise"
     setErrors(errs)
     return Object.keys(errs).length === 0
   }
   const submit = (e) => { e.preventDefault(); if (validate()) onConfirm(form) }
+  const deliveryFee = 1500
+  const grandTotal = total + deliveryFee
   return (
     <div className="cart-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-label="Paiement">
       <aside className="cart-drawer checkout-drawer" onClick={e=>e.stopPropagation()}>
         <div className="cart-head"><div><span className="checkout-eyebrow">Finalisation</span><h2>Vos informations</h2></div><button className="icon-btn" onClick={onClose} aria-label="Fermer"><X/></button></div>
         <form className="checkout-form" onSubmit={submit}>
-          <div className="checkout-summary">
-            <div className="summary-icon"><ShoppingBag size={24}/></div>
-            <div className="summary-text"><span>Articles</span><strong>{items.reduce((s,i)=>s+i.qty,0)}</strong></div>
-            <div className="summary-text"><span>Sous-total</span><strong>{formatPrice(total)}</strong></div>
-            <div className="summary-text"><span>Livraison</span><strong>{formatPrice(1500)}</strong></div>
-            <div className="summary-text"><span>Total</span><strong>{formatPrice(total + 1500)}</strong></div>
+          {/* Résumé compact de la commande */}
+          <div className="checkout-order-summary">
+            <span className="order-summary-title">Votre commande</span>
+            {items.map(item => (
+              <div key={item.id} className="order-summary-item">
+                <span>{item.name} × {item.qty}</span>
+                <strong>{formatPrice(item.price * item.qty)}</strong>
+              </div>
+            ))}
           </div>
           
+          {/* Section 01 : Vos informations */}
           <div className="form-section">
-            <h3><User size={18}/> Informations personnelles</h3>
-            <div className="form-group"><label htmlFor="co-name">Nom complet *</label><input id="co-name" name="name" value={form.name} onChange={handleChange} placeholder="Votre nom et prénom" aria-label="Nom complet"/>{errors.name && <span className="error">{errors.name}</span>}</div>
-            <div className="form-group"><label htmlFor="co-phone">Téléphone *</label><input id="co-phone" name="phone" value={form.phone} onChange={handleChange} placeholder="Ex : 96 12 34 56" aria-label="Numéro de téléphone"/>{errors.phone && <span className="error">{errors.phone}</span>}</div>
+            <div className="form-section-header">
+              <span className="form-section-number">01</span>
+              <h3><User size={18}/> Vos informations</h3>
+            </div>
+            <div className="form-group">
+              <label htmlFor="co-name">Nom complet *</label>
+              <input id="co-name" name="name" type="text" autoComplete="name" value={form.name} onChange={handleChange} placeholder="Jean Dupont" aria-label="Nom complet"/>
+              {errors.name && <span className="error">{errors.name}</span>}
+            </div>
+            <div className="form-group">
+              <label htmlFor="co-phone">Téléphone *</label>
+              <input id="co-phone" name="phone" type="tel" inputMode="tel" autoComplete="tel" value={form.phone} onChange={handleChange} placeholder="+229 XX XX XX XX" aria-label="Numéro de téléphone"/>
+              {errors.phone && <span className="error">{errors.phone}</span>}
+            </div>
           </div>
           
+          {/* Section 02 : Livraison */}
           <div className="form-section">
-            <h3><Truck size={18}/> Livraison</h3>
-            <div className="form-group"><label htmlFor="co-address">Adresse de livraison *</label><textarea id="co-address" name="address" value={form.address} onChange={handleChange} placeholder="Quartier, rue, numéro, repère..." rows={3} aria-label="Adresse de livraison"/>{errors.address && <span className="error">{errors.address}</span>}</div>
+            <div className="form-section-header">
+              <span className="form-section-number">02</span>
+              <h3><Truck size={18}/> Livraison</h3>
+            </div>
+            <div className="form-group">
+              <label htmlFor="co-city">Ville *</label>
+              <input id="co-city" name="city" type="text" autoComplete="address-level2" value={form.city} onChange={handleChange} placeholder="Cotonou" aria-label="Ville"/>
+              {errors.city && <span className="error">{errors.city}</span>}
+            </div>
+            <div className="form-group">
+              <label htmlFor="co-district">Quartier *</label>
+              <input id="co-district" name="district" type="text" autoComplete="address-level3" value={form.district} onChange={handleChange} placeholder="Quartier" aria-label="Quartier"/>
+              {errors.district && <span className="error">{errors.district}</span>}
+            </div>
+            <div className="form-group">
+              <label htmlFor="co-address">Adresse *</label>
+              <textarea id="co-address" name="address" autoComplete="street-address" value={form.address} onChange={handleChange} placeholder="Rue, maison, numéro..." rows={3} aria-label="Adresse de livraison"/>
+              {errors.address && <span className="error">{errors.address}</span>}
+            </div>
+            <div className="form-group">
+              <label htmlFor="co-landmark">Repère / indication</label>
+              <input id="co-landmark" name="landmark" type="text" value={form.landmark} onChange={handleChange} placeholder="Ex. près de la pharmacie, à côté de..." aria-label="Repère ou indication complémentaire"/>
+            </div>
           </div>
           
+          {/* Section 03 : Paiement */}
           <div className="form-section">
-            <h3><CreditCard size={18}/> Paiement</h3>
-            <div className="payment-options"><label className={form.payment==='mobile'?'active':''}><input type="radio" name="payment" value="mobile" checked={form.payment==='mobile'} onChange={handleChange}/><CreditCard size={16}/> Mobile Money</label><label className={form.payment==='card'?'active':''}><input type="radio" name="payment" value="card" checked={form.payment==='card'} onChange={handleChange}/><CreditCard size={16}/> Carte bancaire</label><label className={form.payment==='cash'?'active':''}><input type="radio" name="payment" value="cash" checked={form.payment==='cash'} onChange={handleChange}/><Truck size={16}/> Paiement à la livraison</label></div>
+            <div className="form-section-header">
+              <span className="form-section-number">03</span>
+              <h3><CreditCard size={18}/> Paiement</h3>
+            </div>
+            <div className="payment-options">
+              <label className={`payment-card ${form.payment==='mobile'?'active':''}`}>
+                <input type="radio" name="payment" value="mobile" checked={form.payment==='mobile'} onChange={handleChange}/>
+                <CreditCard size={16}/>
+                <div className="payment-card-text">
+                  <span>Mobile Money</span>
+                  <small>MTN / Moov</small>
+                </div>
+              </label>
+              <label className={`payment-card ${form.payment==='card'?'active':''}`}>
+                <input type="radio" name="payment" value="card" checked={form.payment==='card'} onChange={handleChange}/>
+                <CreditCard size={16}/>
+                <div className="payment-card-text">
+                  <span>Carte bancaire</span>
+                  <small>Visa / Mastercard</small>
+                </div>
+              </label>
+              <label className={`payment-card ${form.payment==='cash'?'active':''}`}>
+                <input type="radio" name="payment" value="cash" checked={form.payment==='cash'} onChange={handleChange}/>
+                <Truck size={16}/>
+                <div className="payment-card-text">
+                  <span>Paiement à la livraison</span>
+                </div>
+              </label>
+            </div>
           </div>
           
-          <button type="submit" className="checkout submit-btn">Confirmer ma commande — {formatPrice(total)}</button>
-          <small className="secure-note"><ShieldCheck size={13}/> Paiement 100% sécurisé et crypté</small>
+          {/* Résumé financier */}
+          <div className="checkout-financial-summary">
+            <div className="financial-row">
+              <span>Sous-total</span>
+              <strong>{formatPrice(total)}</strong>
+            </div>
+            <div className="financial-row">
+              <span>Livraison</span>
+              <strong>{formatPrice(deliveryFee)}</strong>
+            </div>
+            <div className="financial-row financial-total">
+              <span>Total</span>
+              <strong>{formatPrice(grandTotal)}</strong>
+            </div>
+          </div>
+          
+          {/* Bouton de confirmation */}
+          <div className="checkout-sticky-actions">
+            <button type="submit" className="checkout submit-btn" disabled={items.length === 0}>
+              Confirmer ma commande — {formatPrice(grandTotal)}
+            </button>
+            <small className="secure-note"><ShieldCheck size={13}/> Paiement 100% sécurisé et crypté</small>
+          </div>
         </form>
       </aside>
     </div>
@@ -418,7 +510,7 @@ function ProductModal({ product, onClose, onAdd, onBuyNow }) {
   )
 }
 
-function AllProducts({ onAdd, onBack, onCart, cartCount, items, onChangeQty, onRemove, total, setCartOpen, setCheckoutOpen, confirmOrder, order, setOrder }) {
+function AllProducts({ onAdd, onBack, onCart, cartCount, items, onChangeQty, onRemove, total, deliveryFee, grandTotal, setCartOpen, setCheckoutOpen, confirmOrder, order, setOrder }) {
   const [category, setCategory] = useState('Tous')
   const [search, setSearch] = useState('')
   const [sort, setSort] = useState('default')
@@ -548,9 +640,11 @@ function App() {
   const changeQty=(id,delta)=>setItems(prev=>prev.map(i=>i.id===id?{...i,qty:i.qty+delta}:i).filter(i=>i.qty>0))
   const cartCount=items.reduce((s,i)=>s+i.qty,0)
   const total=items.reduce((s,i)=>s+i.price*i.qty,0)
+  const deliveryFee = 1500
+  const grandTotal = total + deliveryFee
 
   const confirmOrder=(form)=>{
-    setOrder({ ...form, id: Math.floor(100000+Math.random()*900000), total })
+    setOrder({ ...form, id: Math.floor(100000+Math.random()*900000), total: grandTotal, deliveryFee })
     setCheckoutOpen(false)
     setCartOpen(false)
     setItems([])
@@ -558,7 +652,7 @@ function App() {
 
   if (currentPage === 'all') {
     return <>
-      <AllProducts onAdd={add} onBack={()=>setCurrentPage('home')} onCart={()=>setCartOpen(true)} cartCount={cartCount} items={items} onChangeQty={changeQty} onRemove={id=>setItems(p=>p.filter(i=>i.id!==id))} total={total} setCartOpen={setCartOpen} setCheckoutOpen={setCheckoutOpen} confirmOrder={confirmOrder} order={order} setOrder={setOrder}/>
+      <AllProducts onAdd={add} onBack={()=>setCurrentPage('home')} onCart={()=>setCartOpen(true)} cartCount={cartCount} items={items} onChangeQty={changeQty} onRemove={id=>setItems(p=>p.filter(i=>i.id!==id))} total={total} deliveryFee={deliveryFee} grandTotal={grandTotal} setCartOpen={setCartOpen} setCheckoutOpen={setCheckoutOpen} confirmOrder={confirmOrder} order={order} setOrder={setOrder}/>
       {cartOpen && <Cart items={items} onClose={()=>setCartOpen(false)} onRemove={id=>setItems(p=>p.filter(i=>i.id!==id))} onChangeQty={changeQty} onCheckout={()=>{setCartOpen(false);setCheckoutOpen(true)}}/>}
       {checkoutOpen && <Checkout items={items} total={total} onClose={()=>setCheckoutOpen(false)} onConfirm={confirmOrder}/>}
       {order && <OrderConfirmation order={order} onClose={()=>setOrder(null)}/>}
