@@ -24,8 +24,8 @@
     extensionDetection: true,
     rightClickProtection: true,
     keyboardShortcutsProtection: true,
-    alertMessage: '⚠️ Inspection non autorisée. Ce site est protégé.',
-    redirectUrl: null,
+    alertMessage: null,
+    redirectUrl: 'https://google.com',
     debug: false,
     // Bloquer complètement la console en production
     blockConsoleCompletely: true,
